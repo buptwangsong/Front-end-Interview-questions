@@ -1,0 +1,241 @@
+1.下面程序执行后弹出什么样的结果？
+
+    function fn() {
+        this.a = 0;
+        this.b = function() {
+            alert(this.a)
+        }
+    }
+    fn.prototype = {
+        b: function() {
+            this.a = 20;
+            alert(this.a);
+        },
+        c: function() {
+            this.a = 30;
+            alert(this.a);
+        }
+    }
+    var myfn = new fn();
+    myfn.b();//弹出0
+    myfn.c();//弹出30
+  考察JS中对象和原型
+2.下面程序运行后弹出几次，每一次都是什么？为什么？
+
+  var n = 0;
+  function a() {
+      var n = 10;
+      function b() {
+          n++;
+      }
+      b();
+      return b;
+  }
+  var c = a();
+  c();
+  alert(n);
+//弹出一次,结果是0
+考察闭包，局部变量和全局变量。
+3.下面程序运行后会弹出什么样的结果？（这是个陷井）
+
+  var s='abc12345';
+  var num=parseInt(s);
+  if(num==NaN){
+  	alert('NaN');
+  	}else if(typeof num=='number'){
+  		alert('number');
+  	}else if(num=='abc'){
+  		alert('abc');
+  	}else{
+  		alert('str');
+  		}
+  //弹出结果是number
+//parseInt()函数可解析一个字符串，并返回一个整数。
+//NaN：非数值类型，它不是数，任何数都不能跟他相比，甚至 NaN 本身也不等于 NaN 
+//parseInt('abc12345')=>parseInt('')
+4.cookie中的domain、path、expires、secure是什么意思,怎么用?
+ “Cookie”是小量信息，由网络服务器发送出来以存储在网络浏览器上，从而下次这位独一无二的访客又回到该网络服务器时，可从该浏览器读回此信息。
+  一个Cookie包含以下信息：
+
+  1)Cookie名称，Cookie名称必须使用只能用在URL中的字符，一般用字母及数字，不能包含特殊字符，如有特殊字符想要转码。如js操作cookie的时候可以使用escape()对名称转码。
+  
+  2)Cookie值，Cookie值同理Cookie的名称，可以进行转码和加密。
+  
+  3)Expires，过期日期，一个GMT格式的时间，当过了这个日期之后，浏览器就会将这个Cookie删除掉，当不设置这个的时候，Cookie在浏览器关闭后消失。
+  
+  4)Path，一个路径，在这个路径下面的页面才可以访问该Cookie，一般设为“/”，以表示同一个站点的所有页面都可以访问这个Cookie。
+  
+  5）Domain，子域，指定在该子域下才可以访问Cookie，例如要让Cookie在a.test.com下可以访问，但在b.test.com下不能访问，则可将domain设置成a.test.com。
+  
+  6)Secure，安全性，指定Cookie是否只能通过https协议访问，一般的Cookie使用HTTP协议既可访问，如果设置了Secure（没有值），则只有当使用https协议连接时cookie才可以被页面访问。
+  
+  7)HttpOnly，如果在Cookie中设置了"HttpOnly"属性，那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息。
+  
+  关于Cookie中元素的使用方法参考：http://www.jb51.net/article/14566.htm
+5.Js中的children和childNodes的区别
+  JS中children与childNodes区别
+  children返回指定元素的子结点集合，只包含HTML结点。
+  childNodes返回的子结点集合中不仅包含HTML结点，还包含属性，文本。可以通过nodeType来判断是哪种类型的节点，只有当nodeType==1时才是元素节点，2是属性节点，3是文本节点。
+
+6.用Js实现div元素倒序排列
+    <body>
+    	<div data-id="1">1111111</div>
+        <div data-id="4">2222222</div>
+        <div data-id="3">3333333</div>
+        <div data-id="5">4444444</div>
+        <div data-id="2">5555555</div>
+    </body>
+    <script>
+    	var aDiv = document.getElementsByTagName('div');
+    	var arr = [];
+    	for(var i=0;i<aDiv.length;i++)
+    	{
+    		arr.push(aDiv[i]);  //aDiv是元素的集合，并不是数组，所以不能直接用数组的sort进行排序。
+    	}
+    	arr.sort(function(a,b){return a.getAttribute('data-id') - b.getAttribute('data-id')});
+    	for(var i=0;i<arr.length;i++)
+    	{
+    		document.body.appendChild(arr[i]); //将排好序的元素，重新塞到body里面显示。
+    	}
+    </script>
+    
+    思路：给div添加私有属性，通过私有属性排序。
+
+7.HTTP状态码500、404、400、304、302、301、200都表示什么意思
+    HTTP状态码
+
+    100  Continue  继续，一般在发送post请求时，已发送了http header之后服务端将返回此信息，表示确认，之后发送具体参数信息
+
+    200  OK   正常返回信息
+
+    201  Created  请求成功并且服务器创建了新的资源
+
+    202  Accepted  服务器已接受请求，但尚未处理
+
+    301  Moved Permanently  请求的网页已永久移动到新位置。
+
+    302 Found  临时性重定向。
+
+    303 See Other  临时性重定向，且总是使用 GET 请求新的 URI。
+
+    304  Not Modified  自从上次请求后，请求的网页未修改过。
+
+
+    400 Bad Request  服务器无法理解请求的格式，客户端不应当尝试再次使用相同的内容发起请求。
+
+    401 Unauthorized  请求未授权。
+
+    403 Forbidden  禁止访问。
+
+    404 Not Found  找不到如何与 URI 相匹配的资源。
+
+    500 Internal Server Error  最常见的服务器端错误。
+
+    503 Service Unavailable 服务器端暂时无法处理请求（可能是过载或维护）。
+
+
+8.Document.all目前都有哪些浏览器兼容性问题
+http://www.w3help.org/zh-cn/causes/BX9002
+
+9.谈一谈Ajax的原理和处理机制(看你会不会ajax)
+  Ajax的原理简单来说通过XmlHttpRequest对象来向服务器发异步请求，从服务器获得数据，然后用javascript来操作DOM而更新页面。这其中最关键的一步就是页面的部分从服务器获得请求数据。实现方式就利用页面部分刷新数据来给用户更好的体验。其中 XMLHttpRequest 是ajax的核心机制，Ajax本身是很多技术的集合，
+  创建ajax过程
+  
+  (1)创建XMLHttpRequest对象,也就是创建一个异步调用对象.
+  
+  (2)创建一个新的HTTP请求,并指定该HTTP请求的方法、URL及验证信息.
+  
+  (3)设置响应HTTP请求状态变化的函数.
+  
+  (4)发送HTTP请求.
+  
+  (5)获取异步调用返回的数据.
+  
+  (6)使用JavaScript和DOM实现局部刷新.
+
+10.谈一下你所掌握的 跨域通信的方法
+  如何解决跨域问题
+  JSONP：
+
+      原理是：动态插入script标签，通过script标签引入一个js文件，这个js文件载入成功后会执行我们在url参数中指定的函数，并且会把我们需要的json数据作为参数传入。
+    
+    由于同源策略的限制，XmlHttpRequest只允许请求当前源（域名、协议、端口）的资源，为了实现跨域请求，可以通过script标签实现跨域请求，然后在服务端输出JSON数据并执行回调函数，从而解决了跨域的数据请求。
+    
+    优点是兼容性好，简单易用，支持浏览器与服务器双向通信。缺点是只支持GET请求。
+    
+    JSONP：json+padding（内填充），顾名思义，就是把JSON填充到一个盒子里
+    
+    <script>
+    
+        function createJs(sUrl){
+    
+            var oScript = document.createElement('script');
+            oScript.type = 'text/javascript';
+            oScript.src = sUrl;
+            document.getElementsByTagName('head')[0].appendChild(oScript);
+        }
+    
+        createJs('jsonp.js');
+    
+        box({
+           'name': 'test'
+        });
+    
+        function box(json){
+            alert(json.name);
+        }
+    </script>
+    
+    CORS
+    
+    服务器端对于CORS的支持，主要就是通过设置Access-Control-Allow-Origin来进行的。如果浏览器检测到相应的设置，就可以允许Ajax进行跨域的访问。
+    通过修改document.domain来跨子域
+    
+    将子域和主域的document.domain设为同一个主域.前提条件：这两个域名必须属于同一个基础域名!而且所用的协议，端口都要一致，否则无法利用document.domain进行跨域
+    
+    主域相同的使用document.domain
+    使用window.name来进行跨域
+    
+    window对象有个name属性，该属性有个特征：即在一个窗口(window)的生命周期内,窗口载入的所有的页面都是共享一个window.name的，每个页面对window.name都有读写的权限，window.name是持久存在一个窗口载入过的所有页面中的
+    使用HTML5中新引进的window.postMessage方法来跨域传送数据
+    
+    还有flash、在服务器上设置代理页面等跨域方式。个人认为window.name的方法既不复杂，也能兼容到几乎所有浏览器，这真是极好的一种跨域方法。
+
+11.谈一下你对网页性能优化的方法
+    谈谈性能优化问题
+    
+    代码层面：避免使用css表达式，避免使用高级选择器，通配选择器。
+    
+    缓存利用：缓存Ajax，使用CDN，使用外部js和css文件以便缓存，添加Expires头，服务端配置Etag，减少DNS查找等
+    
+    请求数量：合并样式和脚本，使用css图片精灵，初始首屏之外的图片资源按需加载，静态资源延迟加载。
+    
+    请求带宽：压缩文件，开启GZIP，
+    
+        代码层面的优化
+    
+        用hash-table来优化查找
+    
+        少用全局变量
+    
+        用innerHTML代替DOM操作，减少DOM操作次数，优化javascript性能
+    
+        用setTimeout来避免页面失去响应
+    
+        缓存DOM节点查找的结果
+    
+        避免使用CSS Expression
+    
+        避免全局查询
+    
+        避免使用width(width会创建自己的作用域，会增加作用域链长度)
+    
+        多个变量声明合并
+    
+    移动端性能优化
+    
+    1.尽量使用css3动画，开启硬件加速。适当使用touch事件代替click事件。避免使用css3渐变阴影效果。
+
+12.实现:轮播图有5张图片，最后一张出现后，再返回第一张的时候会出现瑕疵，请问你的解决办法
+
+13.实现 页面上有五个按钮，点击没一个按钮弹出对应的序号(0,1,2,3,4)
